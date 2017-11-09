@@ -1,0 +1,32 @@
+.note {
+  font-family: 'Roboto', sans-serif;
+  color: #BDBDBD;
+  background-color: #424242;
+
+  flex:none;
+  max-width: 50%;
+  border-radius: 20px;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.noteContent {
+  font-family: 'Roboto', sans-serif;
+  font-size: 25px;
+  color: #BDBDBD;
+  background-color: #424242;
+  border:none;
+  flex: auto;
+  width: 90%;
+  resize: none;
+  height: 100%;
+  outline-width: 0;
+  /* max-width: 50%; */
+  /* border-radius: 20px; */
+  align-content: center;
+  /* text-align: center; */
+}

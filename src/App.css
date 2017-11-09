@@ -1,0 +1,14 @@
+.notesWrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.notesBody {
+  flex: 1
+}
+
+body{
+  background-color: #212121;
+  font-family: 'Roboto', sans-serif;
+  color: #BDBDBD;
+}
