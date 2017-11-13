@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import './App.css';
 import NewNote from './NewNote/NewNote.jsx';
 import Note from './Note/Note.jsx';
+// import FirstNote from './FirstNote/FirstNote.jsx';
 import MenuItem from 'material-ui/MenuItem';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -41,6 +42,9 @@ export default class App extends Component {
         selectedNote: {}
       })
     })
+    this.db.on('child_removed', snap => {
+      console.log(snap.val);
+    })
   }
 
   clickHandler(evt){
@@ -54,6 +58,19 @@ export default class App extends Component {
   addNote(note){
     this.db.push().set( note );
   }
+
+  deleteNote(note){
+    if (note.id){
+      this.db.child(note.id).remove();
+    }
+  }
+
+  updateNote(note){
+    console.log(firebase.database().ref(`${note.id}`))
+    if (note.id){
+      firebase.database().ref(`${note.id}`).update(note.content)
+    }
+  }
   //Use render to pass props in Route switch
 
   render(props){
@@ -66,10 +83,10 @@ export default class App extends Component {
           <div className="notesBody">
 
           <Switch>
-            <Route exact path="/" render={() => {return <Note  note={this.state.firstNote} />}} />
+            <Route exact path="/" render={() => {return <NewNote addNote={this.addNote.bind(this)} />}} />
             <Route exact path="/new" render={() => {return <NewNote addNote={this.addNote.bind(this)} />}} />
             <Route
-path="/:id" render={() => {return <Note notes={this.state.notes} />
+path="/:id" render={() => {return <Note notes={this.state.notes} deleteNote={this.deleteNote.bind(this)} updateNote={this.updateNote.bind(this)} />
 }}
  />
           </Switch>
@@ -110,5 +127,3 @@ path="/:id" render={() => {return <Note notes={this.state.notes} />
   }
 }
 
-
-// export default withRouter(App);

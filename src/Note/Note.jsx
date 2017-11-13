@@ -12,42 +12,61 @@ export default class Note extends Component {
     super(props);
 
     let isLoaded = false;
-    let note;
+    let note
 
     if (this.props.notes && this.props.notes.length < 1) {
-      console.log(this.props.notes)
       isLoaded = true;
       note = this.props.notes.find(note => {
         return note.id === window.location.pathname.slice(1)}
       );
 
-      if (!note) {
-        note = {
-          id: null,
-          noteContent: null,
-        };
-      }
+    }
+
+    if (!note) {
+      note = {
+        id: null,
+        noteContent: null,
+      };
     }
 
     this.state = {
       note,
       isLoaded,
+      noteContent: '',
+      noteId: ''
     }
     this.handleChange = this.handleChange.bind(this);
+    this.writeNote = this.writeNote.bind(this);
+    this.removeNote = this.removeNote.bind(this);
   }
   componentDidMount(){
     this.forceUpdate();
   }
 
   handleChange(evt){
+    let noteId = this.state.note.id
     this.setState({
-      noteContent: evt.value
+      noteContent: evt.target.value,
+      note: {
+        id: noteId,
+        noteContent: evt.target.value
+      }
     })
+    console.log(this.state.noteContent)
+  }
+
+  removeNote(){
+    console.log(this.props)
+    this.props.deleteNote(this.state.note)
+
+  }
+
+  writeNote(){
+    // this.props.addNote(this.state.noteContent);
+    this.props.updateNote(this.state.note)
   }
 
   componentWillReceiveProps(nextProps, nextState) {
-    console.log('receiving props: ', nextProps);
-    console.log('current state: ', this.state);
     let id = window.location.pathname.slice(1);
     if ((!this.state.isLoaded || this.state.note.id !== id) && nextProps.notes) {
       let note = nextProps.notes.find(note => {
@@ -56,6 +75,7 @@ export default class Note extends Component {
 
       if (note) {
         this.setState({
+          note,
           noteContent: note.noteContent,
           isLoaded: true,
         });
@@ -72,21 +92,19 @@ export default class Note extends Component {
         cols="90"
         value={this.state.noteContent}
         onChange={this.handleChange} />
-        <RaisedButton className="saveBtn" label="Save" />
+        <RaisedButton className="saveBtn" label="Save" onClick={this.writeNote} />
       </div>
+      <RaisedButton className="deleteBtn" onClick={this.removeNote} label="Delete" />
       </div> :
       <div className="container">
         <div className="note">
           <textarea id="noteContent" rows="10"
           cols="90"
           onChange={this.handleChange} />
-          <RaisedButton className="saveBtn" label="Save" />
+          <RaisedButton className="saveBtn" onClick={this.writeNote} label="Save" />
         </div>
       </div>
    )
   }
 }
 
-// Note.propTypes = {
-//   noteContent: PropTypes.string
-// }
