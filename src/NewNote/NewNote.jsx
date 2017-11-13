@@ -23,7 +23,9 @@ export default class Note extends Component {
 
   writeNote(){
     console.log('before', this.state)
+    if (this.state.noteContent.length > 0){
     this.props.addNote(this.state.noteContent);
+    }
     this.setState({noteContent: ''})
     document.getElementById('noteContent').value = '';
     console.log('after', this.state)

@@ -68,7 +68,8 @@ export default class App extends Component {
   updateNote(note){
     console.log(firebase.database().ref(`${note.id}`))
     if (note.id){
-      firebase.database().ref(`${note.id}`).update(note.content)
+      this.db.child(note.id).update(note.content)
+      // firebase.database().ref(`${note.id}`).update(note.content)
     }
   }
   //Use render to pass props in Route switch
